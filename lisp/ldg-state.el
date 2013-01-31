@@ -25,6 +25,8 @@
   :group 'ledger)
 
 (defun ledger-toggle-state (state &optional style)
+  "return the toggled state give the current state and style
+   <<<NOT USED as of 2013/01/31>>>"
   (if (not (null state))
       (if (and style (eq style 'cleared))
           'cleared)
@@ -33,6 +35,8 @@
       'cleared)))
 
 (defun ledger-entry-state ()
+  "return the state of the transaction at point 
+   <<<NOT USED as of 2013/01/31>>>"
   (save-excursion
     (when (or (looking-at "^[0-9]")
               (re-search-backward "^[0-9]" nil t))
@@ -43,6 +47,8 @@
             (t nil)))))
 
 (defun ledger-transaction-state ()
+  "return the state of the posting at point, or the transaction
+   if nothing noted on the posting <<<NOT USED as of 2013/01/31>>>"
   (save-excursion
     (goto-char (line-beginning-position))
     (skip-syntax-forward " ")
