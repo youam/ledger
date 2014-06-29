@@ -54,16 +54,29 @@ Then that transaction will be shown in its source buffer."
   :type 'boolean
   :group 'ledger-reconcile)
 
-(defcustom ledger-reconcile-force-window-bottom nil
-  "If t make the reconcile window appear along the bottom of the register window and resize."
-  :type 'boolean
-  :group 'ledger-reconcile)
+(defcustom ledger-reconcile-window-position :below
+	"Reconcile window location relative to the ledger buffer, below, right, above, left."
+	:type '(radio (const :tag "Below" :below)
+								(const :tag "Right" :right)
+								(const :tag "Above" :above)
+ 								(const :tag "Left" :left))
+	:group 'ledger-reconcile)
+
+(defcustom ledger-reconcile-window-size 0
+	"Size of reconcile window. 0 wil choose size automatically.  This works best for reconcile window below.  If reconcile window position is left or right, this is the number of columns to use for the reconcile window."
+	:type 'integer
+	:group 'ledger-reconcile)
 
 (defcustom ledger-reconcile-toggle-to-pending t
   "If true then toggle between uncleared and pending.
 reconcile-finish will mark all pending posting cleared."
   :type 'boolean
   :group 'ledger-reconcile)
+
+(defcustom ledger-reconcile-truncate-lines t
+	"Truncate long line in hte reconcile window rather than printing continuation lines."
+	:type 'boolean
+	:group 'ledger-reconcile)
 
 (defcustom ledger-reconcile-default-date-format ledger-default-date-format
   "Default date format for the reconcile buffer"
@@ -386,10 +399,18 @@ moved and recentered.  If they aren't strange things happen."
 
 (defun ledger-reconcile-open-windows (buf rbuf)
   "Ensure that the ledger buffer BUF is split by RBUF."
-  (if ledger-reconcile-force-window-bottom
-      ;;create the *Reconcile* window directly below the ledger buffer.
-      (set-window-buffer (split-window (get-buffer-window buf) nil nil) rbuf)
-    (pop-to-buffer rbuf)))
+	(let ((side (cond
+							 ((eq ledger-reconcile-window-position :below) 'below)
+							 ((eq ledger-reconcile-window-position :above) 'above)
+							 ((eq ledger-reconcile-window-position :right) 'right)
+							 ((eq ledger-reconcile-window-position :left) 'left)))
+				(size (cond
+							 ((= ledger-reconcile-window-size 0) nil)
+							 (t ledger-reconcile-window-size))))
+		(if (or (eq side 'right)
+						(eq side 'left))
+				(setq size (- (window-width) size)))
+		(set-window-buffer (split-window (get-buffer-window buf) size side) rbuf)))
 
 (defun ledger-reconcile ()
   "Start reconciling, prompt for account."
@@ -417,6 +438,7 @@ moved and recentered.  If they aren't strange things happen."
                                  (get-buffer-create ledger-recon-buffer-name))
         (ledger-reconcile-open-windows buf rbuf)
         (ledger-reconcile-mode)
+				(setq truncate-lines ledger-reconcile-truncate-lines)
         (make-local-variable 'ledger-target)
         (set (make-local-variable 'ledger-buf) buf)
         (set (make-local-variable 'ledger-acct) account)))
