@@ -6601,7 +6601,8 @@ Show only unbudgeted postings.
 Use only uncleared transactions in calculations and reports.
 
 @item --unrealized
-FIX THIS ENTRY
+Show generated unrealized gain and loss accounts in the balance
+report.
 
 @item --unrealized-gains @var{STR}
 Allow the user to specify what account name should be used for
@@ -6618,7 +6619,8 @@ Perform all calculations without rounding and display results to full
 precision.
 
 @item --values
-FIX THIS ENTRY @c FIXME thdox
+Shows the values used by each tag when used in combination with the
+@command{tags} command.
 
 @item --weekly
 @itemx -W
