@@ -70,9 +70,20 @@
   :group 'ledger-faces)
 
 (defface ledger-font-posting-amount-face
-  `((t :foreground "#cb4b16" ))
+  `((t :inherit ledger-font-posting-account-face))
   "Face for Ledger amounts"
   :group 'ledger-faces)
+
+(defface ledger-font-posting-amount-pending-face
+  `((t :inherit ledger-font-posting-account-pending-face))
+  "Face for Ledger amounts"
+  :group 'ledger-faces)
+
+(defface ledger-font-posting-amount-cleared-face
+  `((t :inherit ledger-font-posting-account-cleared-face))
+  "Face for Ledger amounts"
+  :group 'ledger-faces)
+
 
 (defface ledger-font-posting-date-face
   `((t :foreground "#cb4b16" ))
