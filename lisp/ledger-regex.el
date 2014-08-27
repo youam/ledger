@@ -332,4 +332,50 @@
           "\\(.*\\)"   ;; desc
           "\\)"))
 
+
+
+(defconst ledger-xact-start-regex
+	(concat ledger-iso-date-regexp  ;; subexp 1
+          " ?\\([ *!]\\)"  ;; mark, subexp 5
+          " ?\\((.*)\\)?"  ;; code, subexp 6
+          " ?\\([^;\n]+\\)"   ;; desc, subexp 7
+					"\\(\n\\|;.*\\)" ;; comment, subexp 8
+          ))
+
+(defconst ledger-xact-start-cleared-regex
+	(concat ledger-iso-date-regexp  ;; subexp 1
+          " ?\\([ *]\\)"  ;; mark, subexp 5
+          " ?\\((.*)\\)?"  ;; code, subexp 6
+          " ?\\([^;\n]+\\)"   ;; desc, subexp 7
+					"\\(\n\\|;.*\\)" ;; comment, subexp 8
+          ))
+
+(defconst ledger-xact-start-pending-regex
+	(concat ledger-iso-date-regexp  ;; subexp 1
+          " ?\\([ !]\\)"  ;; mark, subexp 5
+          " ?\\((.*)\\)?"  ;; code, subexp 6
+          " ?\\([^;\n]+\\)"   ;; desc, subexp 7
+					"\\(\n\\|;.*\\)" ;; comment, subexp 8
+          ))
+
+(defconst ledger-xact-start-uncleared-regex
+	(concat ledger-iso-date-regexp  ;; subexp 1
+          " ?\\((.*)\\)?"  ;; code, subexp 5
+          " ?\\([^;\n]+\\)"   ;; desc, subexp 6
+					"\\(\n\\|;.*\\)" ;; comment, subexp 7
+          ))
+
+(defconst ledger-posting-regex
+	(concat "^[ \t]+ ?"  ;; initial white space
+					"\\([*!]\\)? ?" ;; state, subexpr 1
+					"\\([[:word:]: ]+\\(\n\\|[ \t][ \t]\\)\\)"  ;; account, subexpr 2
+					"\\([^;\n]*\\)"  ;; amount, subexpr 4
+					"\\(.*\\)" ;; comment, subexpr 5
+					))
+
+
+
+(defconst ledger-directive-start-regex
+	"[=~;#%|\\*[A-Za-z]")
+
 (provide 'ledger-regex)
