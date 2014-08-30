@@ -334,7 +334,7 @@
 
 
 
-(defconst ledger-xact-start-regex
+(defconst ledger-xact-start-any-regex
 	(concat ledger-iso-date-regexp  ;; subexp 1
           " ?\\([ *!]\\)"  ;; mark, subexp 5
           " ?\\((.*)\\)?"  ;; code, subexp 6
