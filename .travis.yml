@@ -26,7 +26,7 @@ env:
       # List of required boost libraries to build
     - BOOST_LIBS="date_time,filesystem,iostreams,python,regex,system,test"
       # List of required Homebrew formulae to install
-    - BREWS="gmp,mpfr"
+    - BREWS="gmp,mpfr,lcov"
       # Encrypted COVERITY_SCAN_TOKEN
     - secure: "JigtJ9/pRkpUj1obyt1tN/iQ5tPce1uH/mffazbLtPP/IEG1C3yV2LZmuPvxshyS9fJ4xrR78GQgcWFV7do7pckEfIlnPRhKGnrJG6OXNcEvt6Jyg6aIWzQ96NXFtLZV7QG8iUjyll+Fh8DUK9SXlGDtXcmviCX8RVP55/YMrfQ="
 
@@ -54,8 +54,6 @@ addons:
       name: "ledger/ledger"
       description: "Build submitted via Travis CI"
     notification_email: "ledger-dev@googlegroups.com"
-    build_command_prepend: "cmake . -DUSE_PYTHON=ON -DBUILD_DEBUG=ON -DCLANG_GCOV=ON; make clean"
-    build_command: "make"
     branch_pattern: "coverity"
   apt:
     sources:
@@ -90,7 +88,7 @@ install:
   - tools/travis-install.sh
 
 before_script:
-  - cmake . -DUSE_PYTHON=ON -DBUILD_DEBUG=ON
+  - cmake . -DUSE_PYTHON=ON -DBUILD_DEBUG=ON -DCLANG_GCOV=ON
   - make
 
 script:
