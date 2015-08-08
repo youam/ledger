@@ -54,6 +54,8 @@ addons:
       name: "ledger/ledger"
       description: "Build submitted via Travis CI"
     notification_email: "ledger-dev@googlegroups.com"
+    build_command_prepend: "cmake . -DUSE_PYTHON=ON -DBUILD_DEBUG=ON -DCLANG_GCOV=ON"
+    build_command: "make"
     branch_pattern: "coverity"
   apt:
     sources:
@@ -66,6 +68,7 @@ addons:
       - libgmp-dev
       - libmpfr-dev
       - libedit-dev
+      - lcov
       #- libboost1.55-dev
       #- libboost-test1.55-dev
       #- libboost-regex1.55-dev
@@ -89,18 +92,16 @@ install:
   - tools/travis-install.sh
 
 before_script:
-  - cmake . -DUSE_PYTHON=ON -DBUILD_DEBUG=ON -DCLANG_GCOV=ON
-  - make
+  - tools/travis-before_script.sh
 
 script:
-  - ctest --output-on-failure
-  - PYTHONPATH=. python python/demo.py
+  - tools/travis-script.sh
 
 after_script:
-  # These scripts are run for informational purposes and
-  # should be reintegrated into CTest once they reliably verify the documentation.
-  - python test/CheckTexinfo.py -l ledger -s .
-  - python test/CheckManpage.py -l ledger -s .
+  - tools/travis-after_script.sh
+
+after_success:
+  - tools/travis-after_success.sh
 
 notifications:
   email:
