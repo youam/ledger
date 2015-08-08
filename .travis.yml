@@ -53,6 +53,7 @@ addons:
     project:
       name: "ledger/ledger"
       description: "Build submitted via Travis CI"
+    notification_email: "ledger-dev@googlegroups.com"
     build_command_prepend: "cmake . -DUSE_PYTHON=ON -DBUILD_DEBUG=ON -DCLANG_GCOV=ON; make clean"
     build_command: "make"
     branch_pattern: "coverity"
