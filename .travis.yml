@@ -28,7 +28,7 @@ env:
       # List of required Homebrew formulae to install
     - BREWS="gmp,mpfr"
       # Encrypted COVERITY_SCAN_TOKEN
-    - secure: "mYNxD1B8WNSvUeKzInehZ7syi2g1jH2ymeSQxoeKKD2duq3pvNWPdZdc4o9MlWQcAqcz58rhFZRIpuEWCnP0LbbJaG+MyuemMn9uAmg9Y4gFpMsBPHuTdf8pO3rDex+tkrr9puEJFgL+QV/TehxO6NDDpx7UdYvJb+4aZD/auYI="
+    - secure: "JigtJ9/pRkpUj1obyt1tN/iQ5tPce1uH/mffazbLtPP/IEG1C3yV2LZmuPvxshyS9fJ4xrR78GQgcWFV7do7pckEfIlnPRhKGnrJG6OXNcEvt6Jyg6aIWzQ96NXFtLZV7QG8iUjyll+Fh8DUK9SXlGDtXcmviCX8RVP55/YMrfQ="
 
 matrix:
   exclude:
@@ -53,9 +53,9 @@ addons:
     project:
       name: "ledger/ledger"
       description: "Build submitted via Travis CI"
-    build_command_prepend: "cmake . -DUSE_PYTHON=ON -DBUILD_DEBUG=ON -DCLANG_GCOV=ON"
+    build_command_prepend: "cmake . -DUSE_PYTHON=ON -DBUILD_DEBUG=ON -DCLANG_GCOV=ON; make clean"
     build_command: "make"
-    branch_pattern: coverity
+    branch_pattern: "coverity"
   apt:
     sources:
       - ubuntu-toolchain-r-test
