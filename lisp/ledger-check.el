@@ -89,7 +89,11 @@
           (setq have-warnings 'true)
           (end-of-line))))
     (if (not have-warnings)
-        (insert "No errors or warnings reported."))))
+        (progn
+          (message "No errors or warnings reported.")
+          (ledger-check-quit)
+          'nil)
+      't)))
 
 (defun ledger-check-goto ()
   "Goto the ledger check buffer."
@@ -108,7 +112,7 @@
   (kill-buffer (get-buffer ledger-check-buffer-name)))
 
 (defun ledger-check-buffer ()
-  "Run a ledge with --explicit and --strict report errors and assist with fixing them.
+  "Run ledger with --explicit and --strict report errors and assist with fixing them.
 
 The output buffer will be in `ledger-check-mode', which defines
 commands for navigating the buffer to the errors found, etc."
@@ -126,11 +130,11 @@ commands for navigating the buffer to the errors found, etc."
         (pop-to-buffer (get-buffer-create ledger-check-buffer-name))
       (ledger-check-mode)
       (set (make-local-variable 'ledger-original-window-cfg) wcfg)
-      (ledger-do-check)
-      (shrink-window-if-larger-than-buffer)
-      (set-buffer-modified-p nil)
-      (setq buffer-read-only t)
-      (message "q to quit; r to redo; k to kill"))))
+      (when (ledger-do-check)
+        (shrink-window-if-larger-than-buffer)
+        (set-buffer-modified-p nil)
+        (setq buffer-read-only t)
+        (message "q to quit; r to redo; k to kill")))))
 
 
 (provide 'ledger-check)
